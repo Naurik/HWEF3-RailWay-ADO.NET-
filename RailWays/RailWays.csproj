@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
+    <Compile Include="ContextForTrain.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="Program.cs" />

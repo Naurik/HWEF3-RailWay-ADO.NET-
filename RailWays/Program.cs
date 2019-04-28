@@ -10,7 +10,7 @@ namespace RailWays
     {
         static void Main(string[] args)
         {
-            using (var context = new Context())
+            using (var context = new ContextForTrain())
             {
                 var directionList = context.Directions.ToList();
                 var TrainsList = context.Trains.ToList();
@@ -68,7 +68,7 @@ namespace RailWays
                 //int k = 0;
                 //foreach (Train train in countWagons)//Кол-во поездов
                 //{
-                //    for(int m=0; m < train.CountWagon; m++)//Для каждого поезда свое кол-во вагона
+                //    for (int m = 0; m < train.CountWagon; m++)//Для каждого поезда свое кол-во вагона
                 //    {
                 //        Console.WriteLine("Сколько мест добавить?");
                 //        int countPlace = int.Parse(Console.ReadLine());
@@ -108,90 +108,99 @@ namespace RailWays
                 int countPassangers = int.Parse(Console.ReadLine());
                 for (int i = 0; i < countPassangers; i++)
                 {
-                    Console.WriteLine("Введите имя пассажира?");
-                    string namePassanger = Console.ReadLine();
                     Console.WriteLine("Введите направление: (c 0)");
-                    for (int j = 0; j < context.Directions.Count(); j++)
-                    {
-                        //Показывает список направлении откуда - куда
+                        for (int j = 0; j < context.Directions.Count(); j++)
+                        {
+                            //Показывает список направлении откуда - куда
                             Console.WriteLine($"{j}" +
                             $" {directionList[j].BeginCity} - " +
                             $"{directionList[j].EndCity}");
-                    }
-                    int choiceDirectionForPassangers = int.Parse(Console.ReadLine());
+                        }
+                        int choiceDirectionForPassangers = int.Parse(Console.ReadLine());
 
-                    //записваю выбранный (откуда - куда) в переменные и далее беру Id который совпадает с нашим выбранным
-                    string begin = directionList[choiceDirectionForPassangers].BeginCity;
-                    string end = directionList[choiceDirectionForPassangers].EndCity;
-
-                    var getDirectionId =  (from direct in context.Directions
+                        //записваю выбранный (откуда - куда) в переменные и далее беру Id который совпадает с нашим выбранным
+                        string begin = directionList[choiceDirectionForPassangers].BeginCity;
+                        string end = directionList[choiceDirectionForPassangers].EndCity;
+                        Console.WriteLine("Введите имя пассажира?");
+                        string namePassanger = Console.ReadLine();
+                        var getDirectionId =  (from direct in context.Directions
                                           where (direct.BeginCity == begin
                                           && direct.EndCity == end)
                                           select direct.Id).SingleOrDefault();
-                    
-                    if (getDirectionId != null)
-                    {
-                        var countTrain = (from train in context.Trains
-                                          where train.DirectionId == getDirectionId
-                                          select context.Trains.Count()).FirstOrDefault();
 
-                        Console.WriteLine("Выберите поезд");
-                        for (int l = 0; l < countTrain; l++)
+                        if (getDirectionId != null)
                         {
-                            Console.WriteLine($"{l} ::- " + $"{TrainsList[l].NameTrain}");
-                        }
-                        int choiceTrain = int.Parse(Console.ReadLine());
+                            var countTrain = (from train in context.Trains
+                                              where train.DirectionId == getDirectionId
+                                              select context.Trains.Count()).FirstOrDefault();
+                            var getNameTrain = from train in context.Trains
+                                               where train.DirectionId == getDirectionId
+                                               select train;
 
-                        string trainName = TrainsList[choiceTrain].NameTrain;
+                            Console.WriteLine("Выберите поезд");
+                            int l = 0;
+                            foreach (Train trains in getNameTrain)
+                            {
+                                Console.WriteLine($"{l} ::- " + $"{TrainsList[l].NameTrain}");
+                                l++;
+                            }
+                            //for (int l = 0; l < countTrain; l++)
+                            //{
+                            //    Console.WriteLine($"{l} ::- " + $"{TrainsList[l].NameTrain}");
+                            //}
+                            int choiceTrain = int.Parse(Console.ReadLine());
 
-                        var getTrainId = (from train in context.Trains
-                                          where train.NameTrain == trainName
-                                          select train.Id).FirstOrDefault();
-                        
-                        var countPlaces = (from place in context.Places
-                                           where getTrainId == place.TrainId & place.IsEmty == 1
-                                           select context.Places.Count()).FirstOrDefault();
+                            string trainName = TrainsList[choiceTrain].NameTrain;
 
-                        var places = from place in context.Places
-                                     where getTrainId == place.TrainId & place.IsEmty == 1
-                                     select place;
+                            var getTrainId = (from train in context.Trains
+                                              where train.NameTrain == trainName
+                                              select train.Id).FirstOrDefault();
 
-                        int n = 1;
-                        Console.WriteLine("Выберите место");
-                        Console.WriteLine($"№     " + $"  Номер  " + $"Свободен" + $"  Статус");
-                        foreach (Place placing in places)
-                        {
+                            var countPlaces = (from place in context.Places
+                                               where getTrainId == place.TrainId & place.IsEmty == 1
+                                               select context.Places.Count()).FirstOrDefault();
+
+                            var places = from place in context.Places
+                                         where getTrainId == place.TrainId & place.IsEmty == 1
+                                         select place;
+
+                            int n = 1;
+                            Console.WriteLine("Выберите место");
+                            Console.WriteLine($"№     " + $"  Номер  " + $"Свободен" + $"  Статус");
+                            foreach (Place placing in places)
+                            {
                                 Console.WriteLine($"{n} ::- " + $"\t{placing.NumberPlace}\t" +
                                 $"{placing.IsEmty}\t" +
                                 $"{placing.Status}");
-                            n++;
+                                n++;
+                            }
+
+                            int choicePlace = int.Parse(Console.ReadLine());
+
+                            int placeInWagon = PlaceList[choicePlace].NumberPlace;
+
+                            var getPlaceId = (from place in context.Places
+                                              where place.NumberPlace == placeInWagon
+                                              select place.Id).FirstOrDefault();
+                            var status = (from place in context.Places
+                                          where place.Id == getPlaceId
+                                          select place.Status).FirstOrDefault();
+                            var payment = (from place in context.Places
+                                           where place.Id == getPlaceId
+                                           select place.Payment).FirstOrDefault();
+
+                            var user = new Users
+                            {
+                                Name = namePassanger,
+                                DirectionId = getDirectionId,
+                                PlaceId = getPlaceId,
+                                TrainsId = getTrainId,
+                                Status = status,
+                                Payment = payment,
+                                CountPassangers = countPassangers
+                            };
+                            context.User.Add(user);
                         }
-                        
-                        int choicePlace = int.Parse(Console.ReadLine());
-
-                        int placeInWagon = PlaceList[choicePlace].NumberPlace;
-
-                        var getPlaceId = (from place in context.Places
-                                          where place.NumberPlace == placeInWagon
-                                          select place.Id).FirstOrDefault();
-                        var status = (from place in context.Places
-                                      where place.Id == getPlaceId
-                                      select place.Status).FirstOrDefault();
-                        var payment = (from place in context.Places
-                                       where place.Id == getPlaceId
-                                       select place.Payment).FirstOrDefault();
-
-                        var user = new Users
-                        {
-                            Name = namePassanger,
-                            DirectionId = getDirectionId,
-                            PlaceId = getPlaceId,
-                            TrainsId = getTrainId,
-                            Status = status,
-                            Payment = payment
-                        };
-                        context.User.Add(user);
-                    }
                 }
                 context.SaveChanges();
                 #endregion
