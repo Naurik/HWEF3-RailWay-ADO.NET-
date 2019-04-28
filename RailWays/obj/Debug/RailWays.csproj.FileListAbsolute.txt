@@ -1,0 +1,13 @@
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\RailWays.exe.config
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\RailWays.exe
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\RailWays.pdb
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\EntityFramework.dll
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\EntityFramework.xml
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\bin\Debug\ru\EntityFramework.resources.dll
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\obj\Debug\RailWays.csprojAssemblyReference.cache
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\obj\Debug\RailWays.csproj.CoreCompileInputs.cache
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\obj\Debug\RailWays.csproj.CopyComplete
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\obj\Debug\RailWays.exe
+C:\Users\Acer-PC\source\repos\RailWays\RailWays\obj\Debug\RailWays.pdb
